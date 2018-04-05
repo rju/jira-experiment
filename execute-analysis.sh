@@ -4,6 +4,8 @@
 
 BASE=$(cd "$(dirname "$0")"; pwd)
 
+ANALYSIS_OPTS="-Xmx6g -Xms2g -Dlog4j.configuration=file:///home/reiner/Projects/iObserve/experiments/jira-experiment/log4j.cfg"
+
 # internal data
 CLUSTERINGS[0]=xmeans
 CLUSTERINGS[1]=em
@@ -20,7 +22,7 @@ fi
 mode=""
 for C in ${CLUSTERINGS[*]} ; do
 	if [ "$C" == "$1" ] ; then
-		MODE="$C"
+		mode="$C"
 	fi
 done
 
@@ -38,15 +40,15 @@ if [ ! -d $DATA ] ; then
 	exit 1
 fi
 if [ ! -d $FIXED ] ; then
-	echo "FIxed data directory missing"
+	echo "Fixed data directory missing"
 	exit 1
 fi
 if [ ! -d $PCM ] ; then
 	echo "PCM directory missing"
 	exit 1
 fi
-if [ ! -d "$RESULT_DIR" ] ; then
-	mkdir "$RESULT_DIR"
+if [ ! -d "$RESULTS" ] ; then
+	mkdir "$RESULTS"
 fi
 
 # compute setup
@@ -58,7 +60,7 @@ else
 		if [ "$KIEKER_DIRECTORIES" == "" ] ;then
 			KIEKER_DIRECTORIES="$FIXED/$D"
 		else
-			KIEKER_DIRECTORIES="KIEKER_DIRECTORIES:$FIXED/$D"
+			KIEKER_DIRECTORIES="$KIEKER_DIRECTORIES:$FIXED/$D"
 		fi
 	done
 fi
@@ -71,7 +73,7 @@ kieker.monitoring.name=JIRA
 kieker.monitoring.hostname=
 kieker.monitoring.metadata=true
 
-iobserve.service.reader=org.iobserve.service.source.FileSourceCompositeStage
+iobserve.analysis.source=org.iobserve.service.source.FileSourceCompositeStage
 org.iobserve.service.source.FileSourceCompositeStage.sourceDirectories=$KIEKER_DIRECTORIES
 
 iobserve.analysis.traces=true
@@ -84,11 +86,12 @@ iobserve.analysis.model.pcm.directory.init=$PCM
 iobserve.analysis.behavior.IEntryCallTraceMatcher=org.iobserve.analysis.systems.jira.JIRACallTraceMatcher
 iobserve.analysis.behavior.IEntryCallAcceptanceMatcher=org.iobserve.analysis.systems.jira.JIRATraceAcceptanceMatcher
 iobserve.analysis.behavior.ITraceSignatureCleanupRewriter=org.iobserve.analysis.systems.jira.JIRASignatureCleanupRewriter
-iobserve.analysis.behavior.IModelGenerationFilterFactory=org.iobserve.analysis.clustering.filter.models.configuration.examples.JPetStoreEntryCallRulesFactory
+iobserve.analysis.behavior.IModelGenerationFilterFactory=org.iobserve.analysis.systems.jpetstore.JPetStoreEntryCallRulesFactory
 
 iobserve.analysis.behavior.triggerInterval=1000
 
 iobserve.analysis.behavior.sink.baseUrl=$RESULTS
+iobserve.analysis.container.management.sink.visualizationUrl=http://localhost:8080
 EOF
 
 case "$mode" in
@@ -121,13 +124,13 @@ EOF
 "${CLUSTERINGS[3]}")
 cat << EOF >> analysis.config
 # specific setup similarity matching
-iobserve.analysis.behaviour.filter=org.iobserve.analysis.clustering.similaritymatching.BehaviorCompositeStage
-
-iobserve.analysis.behavior.IClassificationStage=org.iobserve.analysis.clustering.similaritymatching.SimilarityMatchingStage
-iobserve.analysis.behavior.sm.IParameterMetricStrategy=org.iobserve.analysis.systems.jira.JIRAParameterMetric
-iobserve.analysis.behavior.sm.IStructureMetricStrategy=org.iobserve.analysis.clustering.imilaritymatching.GeneralStructureMetric
-iobserve.analysis.behavior.sm.IModelGenerationStrategy=org.iobserve.analysis.clustering.similaritymatching.UnionModelGenerationStrategy
-iobserve.analysis.behavior.sm.radius=2
+iobserve.analysis.behaviour.filter=org.iobserve.analysis.behavior.clustering.similaritymatching.BehaviorCompositeStage
+iobserve.analysis.behavior.IClassificationStage=org.iobserve.analysis.behavior.clustering.similaritymatching.SimilarityMatchingStage
+iobserve.analysis.behavior.sm.IParameterMetric=org.iobserve.analysis.systems.jira.JIRAParameterMetric
+iobserve.analysis.behavior.sm.IStructureMetricStrategy=org.iobserve.analysis.behavior.clustering.similaritymatching.GeneralStructureMetric
+iobserve.analysis.behavior.sm.IModelGenerationStrategy=org.iobserve.analysis.behavior.clustering.similaritymatching.UnionModelGenerationStrategy
+iobserve.analysis.behavior.sm.parameters.radius=2
+iobserve.analysis.behavior.sm.structure.radius=2
 EOF
 ;;
 esac

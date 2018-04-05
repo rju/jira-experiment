@@ -2,6 +2,8 @@
 
 BASE=$(cd "$(dirname "$0")"; pwd)
 
+export RECONSTRUCTOR_OPTS="-Xmx3g -Xms1g -Dlog4j.configuration=file:///home/reiner/Projects/iObserve/experiments/jira-experiment/log4j.cfg"
+
 if [ -f $BASE/config ] ; then
 	. $BASE/config
 else
@@ -44,7 +46,7 @@ kieker.monitoring.writer.filesystem.TextMapFileHandler.compression=kieker.monito
 kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler=kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler
 kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler=kieker.monitoring.writer.filesystem.BinaryLogStreamHandler
 kieker.monitoring.writer.filesystem.FileWriter.flush=true
-kieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192
+kieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192000
 kieker.monitoring.writer.filesystem.FileWriter.compression=kieker.monitoring.writer.filesystem.compression.NoneCompressionFilter
 EOF
 
