@@ -1,0 +1,12 @@
+## common
+# data location
+DATA="/data/reiner/jira/2017-ws-sp"
+FIXED="$BASE/fixed"
+PCM="$BASE/pcm"
+DB="$BASE/db"
+# analysis results
+RESULT_DIR="$BASE/results"
+# iobserve analysis
+ANALYSIS="$BASE/../analysis-0.0.3-SNAPSHOT/bin/analysis"
+
+# end
