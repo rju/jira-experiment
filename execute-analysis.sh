@@ -4,7 +4,7 @@
 
 BASE=$(cd "$(dirname "$0")"; pwd)
 
-ANALYSIS_OPTS="-Xmx6g -Xms2g -Dlog4j.configuration=file:///home/reiner/Projects/iObserve/experiments/jira-experiment/log4j.cfg"
+export ANALYSIS_OPTS="-Xmx24g -Xms10m -Dlog4j.configuration=file:///home/reiner/Projects/iObserve/experiments/jira-experiment/log4j.cfg"
 
 # internal data
 CLUSTERINGS[0]=xmeans
