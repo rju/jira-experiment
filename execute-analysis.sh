@@ -124,7 +124,7 @@ EOF
 "${CLUSTERINGS[3]}")
 cat << EOF >> analysis.config
 # specific setup similarity matching
-iobserve.analysis.behaviour.filter=org.iobserve.analysis.behavior.clustering.similaritymatching.BehaviorCompositeStage
+iobserve.analysis.behaviour.filter=org.iobserve.analysis.behavior.clustering.similaritymatching.SimilarityBehaviorCompositeStage
 iobserve.analysis.behavior.IClassificationStage=org.iobserve.analysis.behavior.clustering.similaritymatching.SimilarityMatchingStage
 iobserve.analysis.behavior.sm.IParameterMetric=org.iobserve.analysis.systems.jira.JIRAParameterMetric
 iobserve.analysis.behavior.sm.IStructureMetricStrategy=org.iobserve.analysis.behavior.clustering.similaritymatching.GeneralStructureMetric
