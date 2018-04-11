@@ -50,7 +50,7 @@ kieker.monitoring.writer.filesystem.FileWriter.bufferSize=8192000
 kieker.monitoring.writer.filesystem.FileWriter.compression=kieker.monitoring.writer.filesystem.compression.NoneCompressionFilter
 EOF
 
-$BASE/../reconstructor-0.0.3-SNAPSHOT/bin/reconstructor -c reconstructor.config
+$RECONSTRUCTOR -c reconstructor.config
 
 done
 
