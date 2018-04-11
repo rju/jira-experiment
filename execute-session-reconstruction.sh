@@ -2,7 +2,7 @@
 
 BASE=$(cd "$(dirname "$0")"; pwd)
 
-export RECONSTRUCTOR_OPTS="-Xmx3g -Xms1g -Dlog4j.configuration=file:///home/reiner/Projects/iObserve/experiments/jira-experiment/log4j.cfg"
+export RECONSTRUCTOR_OPTS="-Xmx3g -Xms1g -Dlog4j.configuration=file://$BASE/log4j.cfg"
 
 if [ -f $BASE/config ] ; then
 	. $BASE/config
